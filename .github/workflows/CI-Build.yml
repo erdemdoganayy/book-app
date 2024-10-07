@@ -50,7 +50,7 @@ jobs:
       - name: Upload Chart to Nexus
         run: |
           CHART_NAME="chart-${TIMESTAMP}.tgz"
-          curl -v -F file=@$CHART_NAME -u $NEXUS_USERNAME:$NEXUS_PASSWORD "http://$NEXUS_URL/service/rest/v1/components?repository==helm-hosted"
+          curl -v -F file=@$CHART_NAME -u $NEXUS_USERNAME:$NEXUS_PASSWORD "http://localhost:8081/service/rest/v1/components\?repository\=helm-hosted"
       
     
     
