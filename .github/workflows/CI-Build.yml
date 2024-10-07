@@ -33,7 +33,7 @@ jobs:
         env:
             IMAGE_TAG: ${{ github.sha }}
         run: |
-            sed -i "s/tag: v1/tag: $IMAGE_TAG/" gitops/dev/values.yaml
+            sed -i "" "s/tag: v1/tag: $IMAGE_TAG/" gitops/dev/values.yaml
 
       - name: Helm Push To Nexus
         env:
