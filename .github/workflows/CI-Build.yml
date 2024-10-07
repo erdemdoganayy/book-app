@@ -55,6 +55,11 @@ jobs:
         run: |
           CHART_NAME="chart-${TIMESTAMP}.tgz"
           curl -v -F file=@$CHART_NAME -u $NEXUS_USERNAME:$NEXUS_PASSWORD "http://$NEXUS_URL/service/rest/v1/components?repository=helm-hosted"
+
+      - name: Helm Upgrade
+        run: |
+          helm ls
+          helm upgrade --install book-app-chart -n default ./chart
       
     
     
