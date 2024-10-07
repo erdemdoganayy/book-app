@@ -27,7 +27,22 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG ./app
-    
           docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+
+      - name: Update GitOps Values
+        env:
+            IMAGE_TAG: ${{ github.sha }}
+        run: |
+            sed -i "s/tag: v1/tag: $IMAGE_TAG/" gitops/dev/values.yaml
+
+      - name: Helm Push To Nexus
+        env:
+          NEXUS_USERNAME : ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD : ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_URL : ${{ secrets.NEXUS_URL }}
+        run: |
+          helm package gitops/chart curl -v -F file=@chart.tgz -u $NEXUS_USERNAME -p $NEXUS_PASSWORD http://$NEXUS_URL/service/rest/v1/components?repository==helm-hosted
+
+      
     
     
