@@ -41,7 +41,8 @@ jobs:
           NEXUS_PASSWORD : ${{ secrets.NEXUS_USERNAME }}
           NEXUS_URL : ${{ secrets.NEXUS_URL }}
         run: |
-          helm package gitops/chart curl -v -F file=@chart.tgz -u $NEXUS_USERNAME -p $NEXUS_PASSWORD http://$NEXUS_URL/service/rest/v1/components?repository==helm-hosted
+          helm package gitops/chart
+          curl -v -F file=@chart.tgz -u $NEXUS_USERNAME -p $NEXUS_PASSWORD http://$NEXUS_URL/service/rest/v1/components?repository==helm-hosted
 
       
     
