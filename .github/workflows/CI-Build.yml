@@ -10,27 +10,31 @@ on:
   pull_request:
     branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+
   build:
-    # The type of runner that the job will run on
+
     runs-on: self-hosted
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+   
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    
       - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./app
+          push: true
+          tags: my-books-api:latest
+    
+      - name: Helm install
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          helm repo add stable https://charts.helm.sh/stable
+          helm upgrade --install books-api ./helm/books-api --namespace default --set image.repository=my-books-api --set image.tag=latest
+
