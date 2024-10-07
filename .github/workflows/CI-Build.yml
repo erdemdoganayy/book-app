@@ -38,7 +38,7 @@ jobs:
       - name: Helm Upgrade
         run: |
           helm ls
-          helm upgrade --install book-app-chart -n default ./gitops/chart
+          helm upgrade --install book-app-chart -n default ./gitops/chart/values.yaml
       
     
     
