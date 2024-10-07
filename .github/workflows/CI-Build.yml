@@ -26,9 +26,8 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          pwd
-          docker build -t $IMAGE_NAME:$IMAGE_TAG ./app
-          docker tag $IMAGE_NAME $DOCKER_USERNAME/$IMAGE_NAME
+          docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG ./app
+    
           docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
     
     
