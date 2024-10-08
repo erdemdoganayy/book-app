@@ -41,9 +41,9 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 3000
+  port: 5000
 containerPort:
-  port: 3000
+  port: 5000
 
 ingress:
   enabled: false
