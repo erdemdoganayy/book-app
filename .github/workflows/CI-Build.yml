@@ -20,13 +20,29 @@ jobs:
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         
           
-      - name: BookApp Build, tag, and push image to DockerHUB  
+      - name: voteApp Build, tag, and push image to DockerHUB  
         env:
-          IMAGE_NAME: book-app
+          IMAGE_NAME: vote-app
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG ./app
+          docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG ./vote
+          docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+      - name: voteApp Build, tag, and push image to DockerHUB  
+        env:
+          IMAGE_NAME: worker-app
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG ./worker
+          docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
+      - name: voteApp Build, tag, and push image to DockerHUB  
+        env:
+          IMAGE_NAME: result-app
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG ./result
           docker push $DOCKER_USERNAME/$IMAGE_NAME:$IMAGE_TAG
 
       - name: Update GitOps Values
@@ -38,7 +54,7 @@ jobs:
       - name: Helm Upgrade
         run: |
           helm ls
-          helm upgrade --install book-app-chart -n default ./gitops/chart
+          helm upgrade --install vote-app-chart -n default ./gitops/chart
       
     
     
